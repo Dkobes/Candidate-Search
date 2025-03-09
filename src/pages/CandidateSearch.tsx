@@ -20,6 +20,7 @@ const CandidateSearch: React.FC = () => {
     email: '',
     company: '',
     html_url: '',
+    login: '',
   });
   const [noMoreCandidates, setNoMoreCandidates] = useState(false);
   const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
@@ -49,6 +50,7 @@ const CandidateSearch: React.FC = () => {
           email: user.email || 'N/A',
           company: user.company || 'N/A',
           html_url: user.html_url || 'N/A',
+          login: user.login,
         });
       } catch (error) {
         console.error('Error fetching candidate details:', error);
@@ -60,6 +62,7 @@ const CandidateSearch: React.FC = () => {
       email: 'N/A',
       company: 'N/A',
       html_url: '',
+      login: '',
       });
     }
     };
@@ -79,7 +82,7 @@ const CandidateSearch: React.FC = () => {
   const getNextCandidate = async () => {
     index.current += 1;
     if (index.current < savedCandidates.length) {
-      await fetchCandidateDetails(savedCandidates[index.current].username); 
+      await fetchCandidateDetails(savedCandidates[index.current].login); 
     } else {
       setNoMoreCandidates(true);
     }
@@ -96,6 +99,7 @@ const CandidateSearch: React.FC = () => {
         email: user.email || 'N/A',
         company: user.company || 'N/A',
         html_url: user.bio || 'N/A',
+        login: user.login,
       });
     } catch {
       setCandidate({
@@ -106,6 +110,7 @@ const CandidateSearch: React.FC = () => {
         email: 'N/A',
         company: 'N/A',
         html_url: 'N/A',
+        login: '',
       });
     }
   };
