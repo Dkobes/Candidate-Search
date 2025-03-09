@@ -5,9 +5,14 @@ const SavedCandidates = () => {
   const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
 
   useEffect(() => {
-    const storedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
-    setSavedCandidates(storedCandidates);
-  }, []);
+    try {
+      const storedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
+      setSavedCandidates(storedCandidates);
+    } catch (error) {
+      console.error('Error parsing saved candidates from localStorage:', error);
+      setSavedCandidates([]);
+    }
+  }, [])
 
   return (
     <div>

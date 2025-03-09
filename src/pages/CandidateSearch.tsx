@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
+import SavedCandidates from './SavedCandidates';
 import Candidate from '../interfaces/Candidate.interface';
 
 interface GithubUserResponse {
@@ -76,12 +77,13 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void
             <p>
               URL: <a href={currentCandidate.html_url}>{currentCandidate.html_url}</a>
             </p>
-            <button onClick={handleSave}>+</button>
-            <button onClick={handleSkip}>-</button>
+            <button onClick={handleSave}>Save</button>
+            <button onClick={handleSkip}>Skip</button>
           </div>
         ) : (
           <p>No more candidates available.</p>
         )}
+        <SavedCandidates />
       </div>
     );
   };
