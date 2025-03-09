@@ -4,7 +4,7 @@
     location: string;
     avatar: string;
     email: string;
-    url?: string;
+    html_url: string;
     company: string;
 }
 

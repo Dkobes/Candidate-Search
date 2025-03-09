@@ -23,7 +23,7 @@ const SavedCandidates: React.FC = () => {
               <p>Email: {candidate.email}</p>
               <p>Company: {candidate.company}</p>
               <p>
-                URL: <a href={candidate.url}>{candidate.url}</a>
+                URL: <a href={candidate.html_url}>{candidate.html_url}</a>
               </p>
             </li>
           ))}

@@ -50,7 +50,7 @@ const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate = () =>
             <p>Email: {currentCandidate.email}</p>
             <p>Company: {currentCandidate.company}</p>
             <p>
-              URL: <a href={currentCandidate.url}>{currentCandidate.url}</a>
+              URL: <a href={currentCandidate.html_url}>{currentCandidate.html_url}</a>
             </p>
             <button onClick={handleSave}>+</button>
             <button onClick={handleNext}>-</button>
