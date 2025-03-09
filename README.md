@@ -1,6 +1,4 @@
 # Candidate Search
-<img src="../Candidate-Search/src/assets/candidate-search.png">
-<img src="../Candidate-Search/src/assets/saved-candidates.png">
 
 # Table of Contents
 1. [Description] (#description)
