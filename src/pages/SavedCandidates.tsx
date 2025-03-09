@@ -32,7 +32,6 @@ const SavedCandidates = () => {
               <th scope="col">Location</th>
               <th scope="col">Email</th>
               <th scope="col">Company</th>
-              <th scope="col">Bio</th>
               <th scope="col">Reject</th>
             </tr>
             <tbody>
