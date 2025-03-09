@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
-import CandidateQuery from '../interfaces/Candidate.interface';
+import CandidateInterface from '../interfaces/Candidate.interface';
 
 interface CandidateSearchProps {
-  saveCandidate: (candidate: CandidateQuery) => void;
+  saveCandidate: (candidate: CandidateInterface) => void;
 }
 
 const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate }) => {
   const [query, setQuery] = useState<string>(''); 
-  const [results, setResults] = useState<CandidateQuery[]>([]); 
+  const [results, setResults] = useState<CandidateInterface[]>([]); 
   const [loading, setLoading] = useState<boolean>(false); 
   const [error, setError] = useState<string | null>(null); 
   const [searchKey, setSearchKey] = useState<string>('');
