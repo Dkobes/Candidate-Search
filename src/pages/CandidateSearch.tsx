@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { searchGithub, searchGithubUser } from '../api/API';
+import CandidateQuery from '../interfaces/Candidate.interface';
 
-interface Candidate {
-  name: string;
-  url: string;
-}
+
 
 const CandidateSearch = () => {
   const [query, setQuery] = useState<string>('');
-  const [results, setResults] = useState<Candidate[]>([]);
+  const [results, setResults] = useState<CandidateQuery[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,8 +20,8 @@ const CandidateSearch = () => {
   setError(null);
   
     try {
-      const candidates: Candidate[] = await searchGithub(query);
-      const user: Candidate | null = await searchGithubUser(query);
+      const candidates: CandidateQuery[] = await searchGithub(query);
+      const user: CandidateQuery | null = await searchGithubUser(query);
 
       const combinedResults = user ? [...candidates, user] : candidates;
       setResults(combinedResults);

@@ -1,4 +1,4 @@
-interface Candidate {
+ interface Candidate {
     id: number;
     name: string;
     email: string;
@@ -8,4 +8,7 @@ interface Candidate {
     experience: number; 
     education: string;
     appliedDate: Date;
+    url?: string;
 }
+
+export default Candidate;
