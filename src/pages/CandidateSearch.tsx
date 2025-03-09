@@ -27,7 +27,7 @@ const CandidateSearch: React.FC = () => {
   const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
   const index = useRef(0);
 
-  // Fetch candidates and the first candidate's data
+  
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
@@ -74,11 +74,20 @@ const CandidateSearch: React.FC = () => {
   }, []);
 
   const save = () => {
-    const saved = JSON.parse(localStorage.getItem('candidates') || '[]') as Candidate[];
-    if (!saved.some((c) => c.username === candidate.username)) {
-      const updatedCandidate = { ...candidate, id: Date.now() }; 
-      const updatedCandidates = [...saved, updatedCandidate];
-      localStorage.setItem('candidates', JSON.stringify(updatedCandidates));
+    try {
+      const saved = JSON.parse(localStorage.getItem('candidates') || '[]') as Candidate[];
+      console.log('Existing saved candidates:', saved);
+  
+      if (!saved.some((c) => c.username === candidate.username)) {
+        const updatedCandidate = { ...candidate, id: Date.now() }; 
+        const updatedCandidates = [...saved, updatedCandidate];
+        console.log('Adding candidate:', updatedCandidate);
+        localStorage.setItem('candidates', JSON.stringify(updatedCandidates));
+      } else {
+        console.log('Candidate already saved:', candidate.username);
+      }
+    } catch (error) {
+      console.error('Error saving candidate:', error);
     }
   };
 
