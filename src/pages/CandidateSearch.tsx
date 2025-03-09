@@ -3,76 +3,63 @@ import { searchGithub } from '../api/API';
 import CandidateInterface from '../interfaces/Candidate.interface';
 
 interface CandidateSearchProps {
-  saveCandidate: (candidate: CandidateInterface) => void;
+  saveCandidate?: (candidate: CandidateInterface) => void;
 }
 
-const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate }) => {
-  const [query, setQuery] = useState<string>(''); 
-  const [results, setResults] = useState<CandidateInterface[]>([]); 
-  const [loading, setLoading] = useState<boolean>(false); 
-  const [error, setError] = useState<string | null>(null); 
-  const [searchKey, setSearchKey] = useState<string>('');
+const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate = () => {} }) => {
+  const [candidates, setCandidates] = useState<CandidateInterface[]>([]);
+  const [currentCandidateIndex, setCurrentCandidateIndex] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
 
   useEffect(() => {
     const fetchCandidates = async () => {
-      if (!searchKey.trim()) {
-        setResults([]);
-        return;
+      try {
+        const result = await searchGithub();
+        setCandidates(result);
+      } catch (err) {
+        setError('Failed to fetch candidates');
       }
+    };
+    fetchCandidates();
+  }, []);
 
-      setLoading(true);
-      setError(null);
+    const currentCandidate = candidates[currentCandidateIndex];
 
-    try {
-      const candidates = await searchGithub(); 
-      setResults(candidates);
-    } catch (err) {
-      setError('Failed to search candidates'); 
-    } finally {
-      setLoading(false);
-    }
+    const handleSave= () => {
+      if (currentCandidate) {
+        saveCandidate(currentCandidate);
+        handleNext();
+      }
+    };
+
+    const handleNext = () => {
+      setCurrentCandidateIndex((prevIndex) => prevIndex + 1);
+    };
+
+    return (
+      <div>
+        <h1>Candidate Search Engine</h1>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {currentCandidate ? (
+          <div>
+            <img src={currentCandidate.avatar} alt={`${currentCandidate.name}'s avatar`} />
+            <p>Name: {currentCandidate.name}</p>
+            <p>Username: {currentCandidate.username}</p>
+            <p>Location: {currentCandidate.location}</p>
+            <p>Email: {currentCandidate.email}</p>
+            <p>Company: {currentCandidate.company}</p>
+            <p>
+              URL: <a href={currentCandidate.url}>{currentCandidate.url}</a>
+            </p>
+            <button onClick={handleSave}>+</button>
+            <button onClick={handleNext}>-</button>
+          </div>
+        ) : (
+          <p>No more candidates available.</p>
+        )}
+      </div>
+    );
   };
-      fetchCandidates();
-      }, [searchKey]);
-
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setQuery(e.target.value);
-  };
-
-  const handleSearch = (): void => {
-    setSearchKey(query);
-  };
-
-  return (
-    <div>
-      <h1>Candidate Search Engine</h1>
-      <input
-        type="text"
-        placeholder="Enter candidate name"
-        value={query}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleSearch} disabled={loading}>Search</button>
-
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {results.length > 0 && (
-        <ul>
-          {results.map((result, index) => (
-            <li key={index}>
-              <p>Name: {result.name}</p>
-              <p>
-                URL: <a href={result.url} target="_blank" rel="noopener noreferrer">{result.url}</a>
-              </p>
-              <button onClick={() => saveCandidate(result)}>Save Candidate</button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
 
 export default CandidateSearch;

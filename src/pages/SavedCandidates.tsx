@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import Candidate from '../interfaces/Candidate.interface';
+import CandidateInterface from '../interfaces/Candidate.interface';
 
 const SavedCandidates: React.FC = () => {
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [savedCandidates, setSavedCandidates] = useState<CandidateInterface[]>([]);
 
   useEffect(() => {
-      const savedCandidates = localStorage.getItem("candidates");
-      if (savedCandidates) {
-          setCandidates(JSON.parse(savedCandidates)); 
-      }
+    const storedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
+    setSavedCandidates(storedCandidates);
   }, []);
 
   return (
-      <div>
-          <h2>Saved Candidates</h2>
-          {candidates.length === 0 ? (
-              <p>No candidates saved.</p>
-          ) : (
-              <ul>
-                  {candidates.map((candidate, index) => (
-                      <li key={index}>
-                          <h3>{candidate.username}</h3>
-                          <p>Location: {candidate.location || "Not available"}</p>
-                          <img src={candidate.avatar} alt={candidate.username} />
-                          <p>
-                              <a href={candidate.url} target="_blank" rel="noopener noreferrer">
-                                  View Profile
-                              </a>
-                          </p>
-                      </li>
-                  ))}
-              </ul>
-          )}
-      </div>
+    <div>
+      <h1>Saved Candidates</h1>
+      {savedCandidates.length > 0 ? (
+        <ul>
+          {savedCandidates.map((candidate, index) => (
+            <li key={index}>
+              <img src={candidate.avatar} alt={`${candidate.name}'s avatar`} />
+              <p>Name: {candidate.name}</p>
+              <p>Username: {candidate.username}</p>
+              <p>Location: {candidate.location}</p>
+              <p>Email: {candidate.email}</p>
+              <p>Company: {candidate.company}</p>
+              <p>
+                URL: <a href={candidate.url}>{candidate.url}</a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No candidates have been accepted.</p>
+      )}
+    </div>
   );
 };
 
