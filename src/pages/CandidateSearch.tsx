@@ -24,11 +24,17 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: CandidateInterface
 
     const handleSave = () => {
       if (currentCandidate) {
-        const storedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
-        const updatedCandidates = [...storedCandidates, currentCandidate];
-        localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
-        saveCandidate(currentCandidate);
-        setCurrentCandidateIndex((prevIndex) => prevIndex + 1);
+        const storedCandidates: CandidateInterface[] = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
+        const isDuplicate = storedCandidates.some(candidate => candidate.username === currentCandidate.username);
+  
+        if (!isDuplicate) {
+          const updatedCandidates = [...storedCandidates, currentCandidate];
+          localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
+          saveCandidate(currentCandidate);
+          setCurrentCandidateIndex((prevIndex) => prevIndex + 1);
+        } else {
+          setError('This candidate has already been saved.');
+        }
       }
     };
 
