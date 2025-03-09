@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
 import CandidateInterface from '../interfaces/Candidate.interface';
 
-interface CandidateSearchProps {
-  saveCandidate?: (candidate: CandidateInterface) => void;
-}
-
-const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate = () => {} }) => {
+const CandidateSearch: React.FC<{ saveCandidate?: (candidate: CandidateInterface) => void }> = ({ saveCandidate = () => {} }) => {
   const [candidates, setCandidates] = useState<CandidateInterface[]>([]);
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -26,14 +22,17 @@ const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate = () =>
 
     const currentCandidate = candidates[currentCandidateIndex];
 
-    const handleSave= () => {
+    const handleSave = () => {
       if (currentCandidate) {
+        const storedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
+        const updatedCandidates = [...storedCandidates, currentCandidate];
+        localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
         saveCandidate(currentCandidate);
-        handleNext();
+        setCurrentCandidateIndex((prevIndex) => prevIndex + 1);
       }
     };
 
-    const handleNext = () => {
+    const handleSkip = () => {
       setCurrentCandidateIndex((prevIndex) => prevIndex + 1);
     };
 
@@ -53,7 +52,7 @@ const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate = () =>
               URL: <a href={currentCandidate.html_url}>{currentCandidate.html_url}</a>
             </p>
             <button onClick={handleSave}>+</button>
-            <button onClick={handleNext}>-</button>
+            <button onClick={handleSkip}>-</button>
           </div>
         ) : (
           <p>No more candidates available.</p>
