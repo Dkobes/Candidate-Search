@@ -5,15 +5,11 @@ const SavedCandidates = () => {
 
   useEffect(() => {
     const array = localStorage.getItem('candidates');
-    if (array) {
-      const data: Candidate[] = JSON.parse(array);
-      setCandidates(data);
-    }
-  }, []);
+    const data = (JSON.parse(array as string));
+    setCandidates(data);
+  }, [])
 
-  useEffect(() => {
-    localStorage.setItem('candidates', JSON.stringify(candidates));
-  }, [candidates]);
+  useEffect(() => localStorage.setItem('candidates', JSON.stringify(candidates)), [candidates])
 
   return (
     <div>
