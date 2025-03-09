@@ -71,15 +71,15 @@ const CandidateSearch: React.FC = () => {
   }, []);
 
   const save = () => {
-    const saved = JSON.parse(localStorage.getItem('savedCandidates') || '[]') as Candidate[];
-    if (!saved.some((c) => c.username === candidate.username)) {
-      const updatedCandidates = [...saved, candidate];
-      localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
-    }
-    getNextCandidate();
+    const savedCandidates = localStorage.getItem('candidates');
+    const savedCandidatesArray = savedCandidates ? JSON.parse(savedCandidates) : [];
+    savedCandidatesArray.push(candidate);
+    localStorage.setItem('candidates', JSON.stringify(savedCandidatesArray));
+
+    nextCandidate();
   };
 
-  const getNextCandidate = async () => {
+  const nextCandidate = async () => {
     index.current += 1;
     if (index.current < savedCandidates.length) {
       await fetchCandidateDetails(savedCandidates[index.current].login); 
@@ -144,7 +144,7 @@ const CandidateSearch: React.FC = () => {
       <h1>Candidate Search</h1>
       {display()}
       <button onClick={save}>Save</button>
-      <button onClick={getNextCandidate} style={{ marginLeft: 15 }}>
+      <button onClick={nextCandidate} style={{ marginLeft: 15 }}>
         Next
       </button>
     </div>
