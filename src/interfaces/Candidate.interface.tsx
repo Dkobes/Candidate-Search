@@ -1,4 +1,4 @@
-export interface Candidate {
+interface Candidate {
     id: number;
     name: string;
     email: string;
