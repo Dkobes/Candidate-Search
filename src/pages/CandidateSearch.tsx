@@ -6,10 +6,10 @@ interface GithubUserResponse {
   login: string;
   avatar_url: string;
   html_url: string;
-  location?: string; // Optional properties
-  email?: string;    // Optional properties
-  company?: string;  // Optional properties
-  name?: string;     // Optional properties
+  location?: string; 
+  email?: string;    
+  company?: string;  
+  name?: string;    
 }
 
 const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void }> = ({ saveCandidate = () => {} }) => {
@@ -21,9 +21,9 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const result: GithubUserResponse[] = await searchGithub(); // Ensure the return type is correct
+        const result: GithubUserResponse[] = await searchGithub(); 
         const formattedResults: Candidate[] = result.map(candidate => ({
-          name: candidate.name || 'N/A', // Adjust according to actual API response
+          name: candidate.name || 'N/A', 
           username: candidate.login,
           location: candidate.location || 'N/A',
           email: candidate.email || 'N/A',
