@@ -7,9 +7,9 @@ interface GithubUserResponse {
   avatar_url: string;
   html_url: string;
   location?: string; 
-  email?: string;    
+  email: string;    
   company?: string;  
-  name?: string;    
+  name: string;    
 }
 
 const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void }> = ({ saveCandidate = () => {} }) => {
