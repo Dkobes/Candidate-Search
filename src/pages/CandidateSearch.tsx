@@ -67,7 +67,7 @@ const CandidateSearch: React.FC = () => {
     fetchCandidates();
   }, []);
 
-  const saveCandidate = () => {
+  const save = () => {
     const saved = JSON.parse(localStorage.getItem('savedCandidates') || '[]') as Candidate[];
     if (!saved.some((c) => c.username === candidate.username)) {
       const updatedCandidates = [...saved, candidate];
@@ -138,7 +138,7 @@ const CandidateSearch: React.FC = () => {
     <div>
       <h1>Candidate Search</h1>
       {display()}
-      <button onClick={saveCandidate}>Save</button>
+      <button onClick={save}>Save</button>
       <button onClick={getNextCandidate} style={{ marginLeft: 15 }}>
         Next
       </button>
