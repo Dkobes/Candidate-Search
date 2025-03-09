@@ -1,14 +1,11 @@
  interface Candidate {
-    id: number;
     name: string;
+    username: string;
+    location: string;
+    avatar: string;
     email: string;
-    phone: string;
-    address: string;
-    skills: string[];
-    experience: number; 
-    education: string;
-    appliedDate: Date;
     url?: string;
+    company: string;
 }
 
 export default Candidate;
