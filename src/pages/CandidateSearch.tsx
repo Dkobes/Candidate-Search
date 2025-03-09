@@ -13,6 +13,7 @@ export const searchGithubUser = async (username: string): Promise<any> => {
 
 const CandidateSearch: React.FC = () => {
   const [candidate, setCandidate] = useState<Candidate>({
+    id: 0,
     avatar_url: '',
     name: '',
     username: '',
@@ -43,6 +44,7 @@ const CandidateSearch: React.FC = () => {
       try {
         const user = await searchGithubUser(username);
         setCandidate({
+          id: 0,
           avatar_url: user.avatar_url,
           name: user.name || '',
           username: user.login,
@@ -55,6 +57,7 @@ const CandidateSearch: React.FC = () => {
       } catch (error) {
         console.error('Error fetching candidate details:', error);
     setCandidate({
+      id: 0,
       avatar_url: '',
       name: '',
       username: 'Not Found',
@@ -71,12 +74,12 @@ const CandidateSearch: React.FC = () => {
   }, []);
 
   const save = () => {
-    const savedCandidates = localStorage.getItem('candidates');
-    const savedCandidatesArray = savedCandidates ? JSON.parse(savedCandidates) : [];
-    savedCandidatesArray.push(candidate);
-    localStorage.setItem('candidates', JSON.stringify(savedCandidatesArray));
-
-    nextCandidate();
+    const saved = JSON.parse(localStorage.getItem('candidates') || '[]') as Candidate[];
+    if (!saved.some((c) => c.username === candidate.username)) {
+      const updatedCandidate = { ...candidate, id: Date.now() }; 
+      const updatedCandidates = [...saved, updatedCandidate];
+      localStorage.setItem('candidates', JSON.stringify(updatedCandidates));
+    }
   };
 
   const nextCandidate = async () => {
@@ -92,6 +95,7 @@ const CandidateSearch: React.FC = () => {
     try {
       const user = await searchGithubUser(username);
       setCandidate({
+        id: 0,
         avatar_url: user.avatar_url,
         name: user.name || '',
         username: user.login,
@@ -103,6 +107,7 @@ const CandidateSearch: React.FC = () => {
       });
     } catch {
       setCandidate({
+        id: 0,
         avatar_url: '',
         name: '',
         username: 'Not Found',

@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
+import Candidate from '../interfaces/Candidate.interface';
 
 const SavedCandidates = () => {
   const [candidates, setCandidates] = useState<any[]>([]);
 
-  const reject = (id: number): any => {
-    const newCandidates = candidates.filter((candidate: any) => id !== candidate.id);
+  const reject = (id: number): void => {
+    const newCandidates = candidates.filter((candidate: Candidate) => candidate.id !== id);
     setCandidates(newCandidates);
   };
 
   useEffect(() => {
     const array = localStorage.getItem('candidates');
-    const data = (JSON.parse(array as string));
+    const data = array ? JSON.parse(array) : []; 
     setCandidates(data);
-  }, [])
+  }, []);
 
   useEffect(() => localStorage.setItem('candidates', JSON.stringify(candidates)), [candidates])
 
@@ -43,7 +44,6 @@ const SavedCandidates = () => {
                     <td>{candidate.location}</td>
                     <td>{candidate.email}</td>
                     <td>{candidate.company}</td>
-                    <td>{candidate.bio}</td>
                     <td><button onClick={() => reject(candidate.id)}>Reject</button></td>
                   </tr>
                 );
