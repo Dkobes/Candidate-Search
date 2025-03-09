@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 const SavedCandidates = () => {
   const [candidates, setCandidates] = useState<any[]>([]);
 
+  const reject = (id: number): any => {
+    const newCandidates = candidates.filter((candidate: any) => id !== candidate.id);
+    setCandidates(newCandidates);
+  };
+
   useEffect(() => {
     const array = localStorage.getItem('candidates');
     const data = (JSON.parse(array as string));
@@ -12,28 +17,43 @@ const SavedCandidates = () => {
   useEffect(() => localStorage.setItem('candidates', JSON.stringify(candidates)), [candidates])
 
   return (
-    <div>
-      <h1>Saved Candidates</h1>
-      {candidates.length > 0 ? (
-        <ul>
-          {candidates.map((candidate, index) => (
-            <li key={index}>
-              <img src={candidate.avatar} alt={`${candidate.name}'s avatar`} />
-              <p>Name: {candidate.name}</p>
-              <p>Username: {candidate.username}</p>
-              <p>Location: {candidate.location}</p>
-              <p>Email: {candidate.email}</p>
-              <p>Company: {candidate.company}</p>
-              <p>
-                URL: <a href={candidate.html_url}>{candidate.html_url}</a>
-              </p>
-            </li>
-          ))}
-        </ul>
+    <>
+      {JSON.stringify(candidates) === '[]' ? (
+        <div style={{backgroundColor: 'black', borderRadius: 25, textAlign: 'center'}}>
+          <h2>No Candidates Saved</h2>
+        </div>
       ) : (
-        <p>No candidates have been accepted.</p>
+        <>
+          <h1>Potential Candidates</h1>
+          <table className="table">
+            <tr>
+              <th scope="col">Image</th>
+              <th scope="col">Name</th>
+              <th scope="col">Location</th>
+              <th scope="col">Email</th>
+              <th scope="col">Company</th>
+              <th scope="col">Bio</th>
+              <th scope="col">Reject</th>
+            </tr>
+            <tbody>
+              {candidates.map((candidate: any) => {
+                return (
+                  <tr key={candidate.id}>
+                    <th scope="row"><img src={candidate.avatar_url}/></th>
+                    <td><h3>{candidate.name}</h3><h3>({candidate.username})</h3></td>
+                    <td>{candidate.location}</td>
+                    <td>{candidate.email}</td>
+                    <td>{candidate.company}</td>
+                    <td>{candidate.bio}</td>
+                    <td><button onClick={() => reject(candidate.id)}>Reject</button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+      </>
       )}
-    </div>
+    </>
   );
 };
 
