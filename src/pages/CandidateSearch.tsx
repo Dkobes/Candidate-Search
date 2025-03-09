@@ -6,16 +6,17 @@ interface CandidateSearchProps {
   saveCandidate: (candidate: CandidateQuery) => void;
 }
 
-const CandidateSearch: React.FC<CandidateSearchProps> = () => {
+const CandidateSearch: React.FC<CandidateSearchProps> = ({ saveCandidate }) => {
   const [query, setQuery] = useState<string>(''); 
   const [results, setResults] = useState<CandidateQuery[]>([]); 
   const [loading, setLoading] = useState<boolean>(false); 
   const [error, setError] = useState<string | null>(null); 
+  const [searchKey, setSearchKey] = useState<string>('');
 
 
   useEffect(() => {
     const fetchCandidates = async () => {
-      if (!query.trim()) {
+      if (!searchKey.trim()) {
         setResults([]);
         return;
       }
@@ -33,11 +34,15 @@ const CandidateSearch: React.FC<CandidateSearchProps> = () => {
     }
   };
       fetchCandidates();
-      }, [query]);
+      }, [searchKey]);
 
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
+  };
+
+  const handleSearch = (): void => {
+    setSearchKey(query);
   };
 
   return (
@@ -49,7 +54,7 @@ const CandidateSearch: React.FC<CandidateSearchProps> = () => {
         value={query}
         onChange={handleInputChange}
       />
-      <button onClick={() => setQuery(query)} disabled={loading}>Search</button>
+      <button onClick={handleSearch} disabled={loading}>Search</button>
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -61,6 +66,7 @@ const CandidateSearch: React.FC<CandidateSearchProps> = () => {
               <p>
                 URL: <a href={result.url} target="_blank" rel="noopener noreferrer">{result.url}</a>
               </p>
+              <button onClick={() => saveCandidate(result)}>Save Candidate</button>
             </li>
           ))}
         </ul>
