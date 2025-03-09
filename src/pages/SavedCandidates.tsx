@@ -2,24 +2,26 @@ import { useState, useEffect } from 'react';
 import Candidate from '../interfaces/Candidate.interface';
 
 const SavedCandidates = () => {
-  const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
 
   useEffect(() => {
-    try {
-      const storedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
-      setSavedCandidates(storedCandidates);
-    } catch (error) {
-      console.error('Error parsing saved candidates from localStorage:', error);
-      setSavedCandidates([]);
+    const array = localStorage.getItem('candidates');
+    if (array) {
+      const data: Candidate[] = JSON.parse(array);
+      setCandidates(data);
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('candidates', JSON.stringify(candidates));
+  }, [candidates]);
 
   return (
     <div>
       <h1>Saved Candidates</h1>
-      {savedCandidates.length > 0 ? (
+      {candidates.length > 0 ? (
         <ul>
-          {savedCandidates.map((candidate, index) => (
+          {candidates.map((candidate, index) => (
             <li key={index}>
               <img src={candidate.avatar} alt={`${candidate.name}'s avatar`} />
               <p>Name: {candidate.name}</p>
