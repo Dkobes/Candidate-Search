@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
 import CandidateQuery from '../interfaces/Candidate.interface';
 
-const CandidateSearch: React.FC = () => {
+interface CandidateSearchProps {
+  saveCandidate: (candidate: CandidateQuery) => void;
+}
+
+const CandidateSearch: React.FC<CandidateSearchProps> = () => {
   const [query, setQuery] = useState<string>(''); 
   const [results, setResults] = useState<CandidateQuery[]>([]); 
   const [loading, setLoading] = useState<boolean>(false); 
