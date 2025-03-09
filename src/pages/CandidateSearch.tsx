@@ -2,6 +2,16 @@ import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
 import CandidateInterface from '../interfaces/Candidate.interface';
 
+interface GithubUserResponse {
+  login: string;
+  avatar_url: string;
+  html_url: string;
+  location?: string; // Optional properties
+  email?: string;    // Optional properties
+  company?: string;  // Optional properties
+  name?: string;     // Optional properties
+}
+
 const CandidateSearch: React.FC<{ saveCandidate?: (candidate: CandidateInterface) => void }> = ({ saveCandidate = () => {} }) => {
   const [candidates, setCandidates] = useState<CandidateInterface[]>([]);
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState(0);
@@ -11,8 +21,17 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: CandidateInterface
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const result = await searchGithub();
-        setCandidates(result);
+        const result: GithubUserResponse[] = await searchGithub(); // Ensure the return type is correct
+        const formattedResults: Candidate[] = result.map(candidate => ({
+          name: candidate.name || 'N/A', // Adjust according to actual API response
+          username: candidate.login,
+          location: candidate.location || 'N/A',
+          email: candidate.email || 'N/A',
+          company: candidate.company || 'N/A',
+          html_url: candidate.html_url,
+          avatar: candidate.avatar_url,
+        }));
+        setCandidates(formattedResults);
       } catch (err) {
         setError('Failed to fetch candidates');
       }
