@@ -23,13 +23,13 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void
       try {
         const result: GithubUserResponse[] = await searchGithub(); 
         const formattedResults: Candidate[] = result.map(candidate => ({
+          avatar_url: candidate.avatar_url,
           name: candidate.name || 'N/A', 
           username: candidate.login,
           location: candidate.location || 'N/A',
           email: candidate.email || 'N/A',
           company: candidate.company || 'N/A',
           html_url: candidate.html_url,
-          avatar: candidate.avatar_url,
         }));
         setCandidates(formattedResults);
       } catch (err) {
@@ -67,7 +67,7 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {currentCandidate ? (
           <div>
-            <img src={currentCandidate.avatar} alt={`${currentCandidate.name}'s avatar`} />
+            <img src={currentCandidate.avatar_url} alt={`${currentCandidate.name}'s avatar`} />
             <p>Name: {currentCandidate.name}</p>
             <p>Username: {currentCandidate.username}</p>
             <p>Location: {currentCandidate.location}</p>
