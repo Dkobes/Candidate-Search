@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
-import SavedCandidates from './SavedCandidates';
 import Candidate from '../interfaces/Candidate.interface';
 
 interface GithubUserResponse {
@@ -83,7 +82,6 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void
         ) : (
           <p>No more candidates available.</p>
         )}
-        <SavedCandidates />
       </div>
     );
   };

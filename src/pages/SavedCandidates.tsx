@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import Candidate from '../interfaces/Candidate.interface';
 
 const SavedCandidates = () => {
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [candidates, setCandidates] = useState<any[]>([]);
 
   useEffect(() => {
     const array = localStorage.getItem('candidates');

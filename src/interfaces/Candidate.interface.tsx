@@ -1,4 +1,4 @@
- export interface Candidate {
+interface Candidate {
     name: string;
   username: string;
   location?: string; 
