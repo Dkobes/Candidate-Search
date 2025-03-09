@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API';
-import CandidateInterface from '../interfaces/Candidate.interface';
+import Candidate from '../interfaces/Candidate.interface';
 
 interface GithubUserResponse {
   login: string;
@@ -12,8 +12,8 @@ interface GithubUserResponse {
   name?: string;     // Optional properties
 }
 
-const CandidateSearch: React.FC<{ saveCandidate?: (candidate: CandidateInterface) => void }> = ({ saveCandidate = () => {} }) => {
-  const [candidates, setCandidates] = useState<CandidateInterface[]>([]);
+const CandidateSearch: React.FC<{ saveCandidate?: (candidate: Candidate) => void }> = ({ saveCandidate = () => {} }) => {
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +43,7 @@ const CandidateSearch: React.FC<{ saveCandidate?: (candidate: CandidateInterface
 
     const handleSave = () => {
       if (currentCandidate) {
-        const storedCandidates: CandidateInterface[] = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
+        const storedCandidates: Candidate[] = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
         const isDuplicate = storedCandidates.some(candidate => candidate.username === currentCandidate.username);
   
         if (!isDuplicate) {
