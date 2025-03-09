@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import CandidateInterface from '../interfaces/Candidate.interface';
 
-const SavedCandidates: React.FC = () => {
+const SavedCandidates = () => {
   const [savedCandidates, setSavedCandidates] = useState<CandidateInterface[]>([]);
 
   useEffect(() => {
